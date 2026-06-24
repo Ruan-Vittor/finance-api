@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from jose import JWTError, jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -21,7 +21,7 @@ def verificar_senha(senha: str, hash: str) -> bool:
 
 def criar_token(dados: dict) -> str:
     payload = dados.copy()
-    payload["exp"] = datetime.utcnow() + timedelta(minutes=EXPIRACAO_MINUTOS)
+    payload["exp"] = datetime.now(timezone.utc) + timedelta(minutes=EXPIRACAO_MINUTOS)
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
 def get_usuario_atual(
