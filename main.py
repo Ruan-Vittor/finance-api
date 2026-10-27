@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.responses import RedirectResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 import models, schemas
@@ -13,9 +14,9 @@ app = FastAPI(title="Finance API", description="API de controle financeiro pesso
 app.include_router(transacoes.router)
 app.include_router(resumo.router)
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 def status():
-    return {"status": "online"}
+    return RedirectResponse(url="/docs")
 
 @app.post("/registro", response_model=schemas.UsuarioResponse, status_code=201)
 def registrar(dados: schemas.UsuarioCreate, db: Session = Depends(get_db)):
