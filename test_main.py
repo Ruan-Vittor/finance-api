@@ -38,7 +38,7 @@ client = TestClient(app)
 def test_status():
     response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == {"status": "online"}
+    assert "Swagger UI" in response.text
 
 
 # ── TESTE 2: Registro de usuário com sucesso ─────────────────────
